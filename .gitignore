@@ -1,0 +1,40 @@
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.accdb
+
+# PostgreSQL
+*.dump
+*.backup
+*.sql.bak
+pg_dump*.sql
+data/
+
+# MySQL
+*.sql.gz
+
+# Environment and credentials
+.env
+.env.local
+.env.production
+*.credentials
+*.secret
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
