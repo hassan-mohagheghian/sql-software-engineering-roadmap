@@ -32,6 +32,17 @@ A structured learning path covering SQL fundamentals through advanced database e
 | 230 | Other Databases | `SSE_230_Other_Databases/` |
 | 240 | Database Administration | `SSE_240_Database_Administration/` |
 
+### Files
+
+| Topic | Files |
+|-------|-------|
+| 000 SQL Basics | `SB_01_select.sql` `SB_02_insert.sql` `SB_03_update.sql` `SB_04_delete.sql` `SB_05_create_table.sql` |
+| 010 Data Types | `DT_01_numeric_types.sql` `DT_02_string_types.sql` `DT_03_date_time_types.sql` `DT_04_boolean_and_null.sql` `DT_05_type_casting.sql` |
+| 020 Filtering & Sorting | `FS_01_where_clause.sql` |
+| 030 Joins | `JO_01_inner_join.sql` |
+| 040 Aggregations | `AG_01_count_and_sum.sql` |
+| 050 Subqueries | `SQ_01_basic_subqueries.sql` |
+
 ## Running Examples
 
 Use `run_sql.sh` to execute SQL files against any supported database:
