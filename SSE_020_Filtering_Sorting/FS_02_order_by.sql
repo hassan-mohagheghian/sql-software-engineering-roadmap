@@ -4,11 +4,12 @@
 -- presenting data in a meaningful order.
 --
 -- Key concepts:
--- 1. Single column sorting (ASC, DESC)
--- 2. Multi-column sorting
--- 3. Sorting by column position
--- 4. Sorting by expression
--- 5. NULLS FIRST / NULLS LAST
+-- 1. Default ordering (without ORDER BY)
+-- 2. Single column sorting (ASC, DESC)
+-- 3. Multi-column sorting
+-- 4. Sorting by column position
+-- 5. Sorting by expression
+-- 6. NULLS FIRST / NULLS LAST
 -- -----------------------------------------------------------------------------
 
 
@@ -36,6 +37,25 @@ INSERT INTO products VALUES
     (6, 'Keyboard', 'Electronics', 79.99, 150, 4.1),
     (7, 'Lamp', 'Furniture', 59.99, NULL, 4.0),
     (8, 'Headphones', 'Electronics', 149.99, 100, NULL);
+
+
+-- =============================================================================
+-- Default Ordering (Without ORDER BY)
+-- =============================================================================
+
+SELECT '--- Products without ORDER BY (insertion order) ---' AS note;
+
+-- Without ORDER BY, rows are returned in insertion order (rowid order in SQLite)
+-- This is implementation-dependent — never rely on it in production
+SELECT name, price
+FROM products;
+
+SELECT '--- Same query with explicit ORDER BY for predictable results ---' AS note;
+
+-- Always use ORDER BY when order matters
+SELECT name, price
+FROM products
+ORDER BY product_id;
 
 
 -- =============================================================================
@@ -79,7 +99,7 @@ SELECT '--- Sort by stock, then by name ---' AS note;
 
 -- NULLs appear first by default in ascending order
 SELECT name, stock, price
-FROM productsت
+FROM products
 ORDER BY stock, name;
 
 

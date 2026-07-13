@@ -38,10 +38,10 @@ A structured learning path covering SQL fundamentals through advanced database e
 |-------|-------|
 | 000 SQL Basics | `SB_01_select.sql` `SB_02_insert.sql` `SB_03_update.sql` `SB_04_delete.sql` `SB_05_create_table.sql` |
 | 010 Data Types | `DT_01_numeric_types.sql` `DT_02_string_types.sql` `DT_03_date_time_types.sql` `DT_04_boolean_and_null.sql` `DT_05_type_casting.sql` |
-| 020 Filtering & Sorting | `FS_01_where_clause.sql` |
-| 030 Joins | `JO_01_inner_join.sql` |
-| 040 Aggregations | `AG_01_count_and_sum.sql` |
-| 050 Subqueries | `SQ_01_basic_subqueries.sql` |
+| 020 Filtering & Sorting | `FS_01_where_clause.sql` `FS_02_order_by.sql` `FS_03_limit_offset.sql` `FS_04_case_expression.sql` `FS_05_distinct.sql` |
+| 030 Joins | `JO_01_inner_join.sql` `JO_02_left_right_join.sql` `JO_03_cross_join.sql` `JO_04_self_join.sql` `JO_05_multiple_joins.sql` |
+| 040 Aggregations | `AG_01_count_and_sum.sql` `AG_02_avg_min_max.sql` `AG_03_group_concat.sql` `AG_04_rollup_cuberite.sql` `AG_05_pivot.sql` |
+| 050 Subqueries | `SQ_01_basic_subqueries.sql` `SQ_02_correlated_advanced.sql` `SQ_03_exists_patterns.sql` `SQ_04_subquery_dml.sql` `SQ_05_lateral_derived.sql` |
 
 ## Running Examples
 
