@@ -142,3 +142,47 @@ SELECT '--- Cleanup: dropping tables ---' AS note;
 
 DROP TABLE employees;
 DROP TABLE department_budgets;
+
+
+-- =============================================================================
+-- Bonus: SQLite vs MySQL vs PostgreSQL - UPDATE Differences
+-- =============================================================================
+--
+-- UPDATE syntax is fairly standardized, but there are important differences
+-- in how JOINs and subqueries work in UPDATE statements.
+--
+-- -----------------------------------------------------------------------------
+--
+-- | Feature                      | SQLite                         | MySQL                         | PostgreSQL                     |
+-- |------------------------------|--------------------------------|-------------------------------|--------------------------------|
+-- | Basic UPDATE                 | Yes                            | Yes                           | Yes                            |
+-- | UPDATE with JOIN             | No (use subquery)              | Yes (UPDATE ... JOIN)         | No (use subquery or FROM)      |
+-- | UPDATE with subquery         | Yes                            | Yes                           | Yes                            |
+-- | UPDATE from another table    | Subquery in SET                | JOIN syntax                   | FROM clause                    |
+-- | RETURNING clause             | No                             | No                            | Yes                            |
+-- | LIMIT on UPDATE              | No                             | Yes                           | No                             |
+-- | ORDER BY on UPDATE           | No                             | Yes                           | No                             |
+-- | CASE in SET                  | Yes                            | Yes                           | Yes                            |
+-- | NULL handling                | SET column = NULL              | SET column = NULL             | SET column = NULL              |
+-- | Default value                | SET column = DEFAULT           | SET column = DEFAULT          | SET column = DEFAULT           |
+--
+-- -----------------------------------------------------------------------------
+--
+-- Key takeaways:
+--
+-- 1. SQLite:
+--    - No JOIN in UPDATE — use correlated subqueries instead.
+--    - No RETURNING clause.
+--    - UPDATE is transactional (can be rolled back).
+--
+-- 2. MySQL:
+--    - UPDATE ... JOIN for updating from another table.
+--    - LIMIT and ORDER BY supported (unusual).
+--    - In non-strict mode, updates may silently truncate data.
+--
+-- 3. PostgreSQL:
+--    - UPDATE ... FROM for updating from another table.
+--    - RETURNING clause to get updated values.
+--    - Most standards-compliant behavior.
+--
+-- -----------------------------------------------------------------------------
