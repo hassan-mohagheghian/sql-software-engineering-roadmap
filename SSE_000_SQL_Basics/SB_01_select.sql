@@ -143,3 +143,49 @@ LIMIT 3 OFFSET 3;
 SELECT '--- Cleanup: dropping employees table ---' AS note;
 
 DROP TABLE employees;
+
+
+-- =============================================================================
+-- Bonus: SQLite vs MySQL vs PostgreSQL - SELECT Differences
+-- =============================================================================
+--
+-- SELECT is the most standardized SQL statement, but LIMIT/OFFSET syntax
+-- and some features differ across databases.
+--
+-- -----------------------------------------------------------------------------
+--
+-- | Feature                  | SQLite                         | MySQL                         | PostgreSQL                     |
+-- |--------------------------|--------------------------------|-------------------------------|--------------------------------|
+-- | LIMIT                    | Yes                            | Yes                           | Yes                            |
+-- | LIMIT/OFFSET syntax      | LIMIT n OFFSET m               | LIMIT m, n or LIMIT n OFFSET m| LIMIT n OFFSET m              |
+-- | FETCH FIRST              | Yes (3.33+)                    | Yes (8.0+)                    | Yes                            |
+-- | TOP (SQL Server style)   | No                             | No                            | No                             |
+-- | SELECT DISTINCT          | Yes                            | Yes                           | Yes                            |
+-- | SELECT INTO              | No                             | Yes                           | Yes (CREATE TABLE AS)          |
+-- | AS alias for columns     | Yes                            | Yes                           | Yes                            |
+-- | AS alias for tables      | Yes                            | Optional (use space)          | Yes                            |
+-- | SELECT without FROM      | Yes (SELECT 1+1)               | Yes                           | Yes                            |
+-- | ILIKE (case-insensitive) | No                             | No                            | Yes                            |
+-- | GLOB (file-style match)  | Yes                            | No                            | No                             |
+--
+-- -----------------------------------------------------------------------------
+--
+-- Key takeaways:
+--
+-- 1. SQLite:
+--    - LIMIT/OFFSET is standard.
+--    - GLOB for file-style pattern matching (case-sensitive).
+--    - No SELECT INTO; use CREATE TABLE AS SELECT.
+--
+-- 2. MySQL:
+--    - LIMIT m, n is alternative syntax (m=offset, n=count).
+--    - SELECT INTO not supported; use CREATE TABLE ... SELECT.
+--    - Backticks for identifiers: `column name`.
+--
+-- 3. PostgreSQL:
+--    - LIMIT/OFFSET and FETCH FIRST both supported.
+--    - ILIKE for case-insensitive LIKE.
+--    - CREATE TABLE AS SELECT for creating tables from queries.
+--    - Double quotes for identifiers: "column name".
+--
+-- -----------------------------------------------------------------------------
