@@ -123,3 +123,51 @@ SELECT '--- Cleanup: dropping tables ---' AS note;
 
 DROP TABLE products;
 DROP TABLE archived_products;
+
+
+-- =============================================================================
+-- Bonus: SQLite vs MySQL vs PostgreSQL - INSERT Differences
+-- =============================================================================
+--
+-- INSERT syntax varies significantly, especially for handling duplicates
+-- and bulk inserts.
+--
+-- -----------------------------------------------------------------------------
+--
+-- | Feature                      | SQLite                         | MySQL                         | PostgreSQL                     |
+-- |------------------------------|--------------------------------|-------------------------------|--------------------------------|
+-- | Basic INSERT                 | Yes                            | Yes                           | Yes                            |
+-- | INSERT multiple rows         | Yes                            | Yes                           | Yes                            |
+-- | INSERT with column list      | Yes                            | Yes                           | Yes                            |
+-- | Insert from SELECT           | Yes                            | Yes                           | Yes                            |
+-- | Ignore duplicates            | INSERT OR IGNORE               | INSERT IGNORE                 | ON CONFLICT DO NOTHING         |
+-- | Upsert (insert or update)    | INSERT OR REPLACE              | INSERT ... ON DUPLICATE KEY   | ON CONFLICT ... DO UPDATE      |
+-- | RETURNING clause             | No                             | No                            | Yes                            |
+-- | SERIAL / auto-increment      | INTEGER PRIMARY KEY AUTOINCREMENT | AUTO_INCREMENT              | SERIAL / GENERATED AS IDENTITY |
+-- | Bulk insert performance      | Slower (single transaction)    | Faster (bulk optimizations)   | Moderate                       |
+-- | Quoting strings              | Single quotes                  | Single or double quotes       | Single quotes                  |
+-- | Escape single quote          | '' (double it)                 | \' or ''                      | '' (double it)                 |
+--
+-- -----------------------------------------------------------------------------
+--
+-- Key takeaways:
+--
+-- 1. SQLite:
+--    - INSERT OR IGNORE to skip duplicates silently.
+--    - INSERT OR REPLACE to delete and re-insert on conflict.
+--    - No RETURNING clause (use last_insert_rowid() instead).
+--    - AUTOINCREMENT only with INTEGER PRIMARY KEY.
+--
+-- 2. MySQL:
+--    - INSERT IGNORE to skip duplicates.
+--    - INSERT ... ON DUPLICATE KEY UPDATE for upserts.
+--    - Last insert ID via LAST_INSERT_ID().
+--    - Bulk inserts are faster than individual inserts.
+--
+-- 3. PostgreSQL:
+--    - ON CONFLICT DO NOTHING to skip duplicates.
+--    - ON CONFLICT ... DO UPDATE for upserts.
+--    - RETURNING clause to get inserted values back.
+--    - Most flexible conflict resolution.
+--
+-- -----------------------------------------------------------------------------
