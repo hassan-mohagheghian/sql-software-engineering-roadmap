@@ -243,3 +243,56 @@ SELECT '--- MySQL/PostgreSQL syntax (for reference, not run here) ---' AS note;
 SELECT '--- Cleanup: dropping string_demo table ---' AS note;
 
 DROP TABLE string_demo;
+
+
+-- =============================================================================
+-- Bonus: SQLite vs MySQL vs PostgreSQL - String Type Differences
+-- =============================================================================
+--
+-- All databases support strings, but storage rules, length limits, and
+-- built-in functions vary significantly.
+--
+-- -----------------------------------------------------------------------------
+--
+-- | Feature                  | SQLite                         | MySQL                         | PostgreSQL                     |
+-- |--------------------------|--------------------------------|-------------------------------|--------------------------------|
+-- | CHAR(n)                  | Yes (padded)                   | Yes (padded)                  | Yes (padded)                   |
+-- | VARCHAR(n)               | Yes (logical only)             | Yes (enforced)                | Yes (enforced)                 |
+-- | TEXT                     | Yes (no limit)                 | Yes (up to 65KB)              | TEXT (no limit)                |
+-- | VARCHAR limit            | Enforced at application level  | Enforced by database          | Enforced by database           |
+-- | Trailing space handling  | Truncated on comparison        | Kept but trimmed on compare   | Kept but trimmed on compare    |
+-- | Concatenation            | \|\| operator                  | CONCAT() function             | \|\| operator                 |
+-- | String length            | LENGTH()                       | LENGTH() or CHAR_LENGTH()     | LENGTH() or CHAR_LENGTH()      |
+-- | Substring                | SUBSTR()                       | SUBSTRING() or SUBSTR()       | SUBSTRING()                    |
+-- | Find position            | INSTR()                        | LOCATE() or INSTR()           | POSITION() or STRPOS()         |
+-- | Regex support            | No (GLOB only)                 | REGEXP                         | ~ operator (POSIX regex)       |
+-- | Case conversion          | UPPER(), LOWER()               | UPPER(), LOWER()              | UPPER(), LOWER()               |
+-- | Trim                     | TRIM(), LTRIM(), RTRIM()       | TRIM() with syntax options     | TRIM() with syntax options     |
+-- | Pattern matching         | LIKE, GLOB                     | LIKE, REGEXP                   | LIKE, SIMILAR TO, ~            |
+--
+-- -----------------------------------------------------------------------------
+--
+-- Key takeaways:
+--
+-- 1. SQLite:
+--    - VARCHAR(n) is treated as TEXT — no length enforcement.
+--    - No REGEXP by default (use GLOB for simple patterns).
+--    - CONCAT() not available — use || operator.
+--    - LPAD/RPAD not available — use manual padding.
+--
+-- 2. MySQL:
+--    - VARCHAR(n) enforces length limit.
+--    - CONCAT() for concatenation; || may not work depending on mode.
+--    - REGEXP for pattern matching.
+--    - CHAR_LENGTH() returns character count (vs LENGTH() for bytes).
+--
+-- 3. PostgreSQL:
+--    - Most strict: VARCHAR(n) enforces limit.
+--    - TEXT type has no practical limit.
+--    - ~ operator for POSIX regex; SIMILAR TO for SQL regex.
+--    - Most complete string function library.
+--
+-- Rule of thumb: Use TEXT in SQLite (VARCHAR is just syntax sugar).
+-- In MySQL/PostgreSQL, use VARCHAR when you need enforced length limits.
+--
+-- -----------------------------------------------------------------------------
