@@ -123,3 +123,51 @@ SELECT
 SELECT '--- Cleanup: dropping numeric_types_demo table ---' AS note;
 
 DROP TABLE numeric_types_demo;
+
+
+-- =============================================================================
+-- Bonus: SQLite vs MySQL vs PostgreSQL - Numeric Type Differences
+-- =============================================================================
+--
+-- All databases support integer and decimal types, but storage rules and
+-- precision behavior differ.
+--
+-- -----------------------------------------------------------------------------
+--
+-- | Feature                  | SQLite                         | MySQL                         | PostgreSQL                     |
+-- |--------------------------|--------------------------------|-------------------------------|--------------------------------|
+-- | Integer types            | Only INTEGER (1/2/4/8 bytes)   | TINYINT, SMALLINT, INT, BIGINT| SMALLINT, INTEGER, BIGINT     |
+-- | Integer affinity         | Dynamic (type affinity)        | Strict per declaration        | Strict per declaration         |
+-- | Decimal type             | REAL (floating-point)          | DECIMAL(p,s), NUMERIC(p,s)    | NUMERIC(p,s), DECIMAL(p,s)    |
+-- | Exact precision          | No true DECIMAL type           | Yes                           | Yes                            |
+-- | FLOAT                    | Alias for REAL                 | 4 bytes (single precision)    | 8 bytes (double precision)     |
+-- | DOUBLE                   | Not a type                     | 8 bytes (double precision)    | 8 bytes (double precision)     |
+-- | NUMERIC                   | Affinity only (stores any)     | Exact decimal                 | Exact decimal                  |
+-- | Overflow behavior        | Silent truncation or error     | Error in strict mode          | Error                          |
+-- | Auto-increment           | INTEGER PRIMARY KEY AUTOINCREMENT | AUTO_INCREMENT               | SERIAL / GENERATED AS IDENTITY |
+-- | SERIAL                   | Not a type                     | Not a type                    | Convenience alias for INTEGER  |
+--
+-- -----------------------------------------------------------------------------
+--
+-- Key takeaways:
+--
+-- 1. SQLite:
+--    - Only has INTEGER and REAL types — no strict DECIMAL/FLOAT distinction.
+--    - Type affinity is flexible; a column declared DECIMAL can store text.
+--    - Always use INTEGER for IDs; REAL for approximate decimals.
+--
+-- 2. MySQL:
+--    - Supports full range of integer and decimal types.
+--    - DECIMAL(p,s) is exact; FLOAT/DOUBLE are approximate.
+--    - AUTO_INCREMENT for surrogate keys.
+--
+-- 3. PostgreSQL:
+--    - Most strict type system.
+--    - NUMERIC(p,s) for exact decimals; FLOAT/DOUBLE for approximate.
+--    - SERIAL is a shorthand for auto-incrementing integer.
+--    - Supports GENERATED AS IDENTITY (SQL standard).
+--
+-- Rule of thumb: Use DECIMAL/NUMERIC for money, INTEGER for counts/IDs,
+-- and FLOAT/DOUBLE only for scientific calculations.
+--
+-- -----------------------------------------------------------------------------
